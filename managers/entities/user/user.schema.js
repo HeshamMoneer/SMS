@@ -6,6 +6,12 @@ module.exports = {
             model: 'username',
             required: true,
         },
+        {
+            model: 'password',
+        },
+        {
+            model: 'email',
+        },
     ],
 }
 
