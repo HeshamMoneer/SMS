@@ -7,11 +7,10 @@ module.exports = class User {
         this.config              = config;
         this.cortex              = cortex;
         this.validators          = validators; 
-        this.mongomodels         = mongomodels;
-        this.mongoDB             = mongoDB;
         this.tokenManager        = managers.token;
         this.usersCollection     = "users";
-        this.httpExposed         = ['createUser'];
+        this.httpExposed         = ['createUser', 'loginUser'];
+        this.crud                = mongoDB.CRUD(mongomodels.user);
     }
 
     async createUser({username, email, password}){
@@ -22,16 +21,31 @@ module.exports = class User {
         if(result) return result;
         
         // Creation Logic
-        const crud = this.mongoDB.CRUD(this.mongomodels.user);
         const passwordHash = await bcrypt.hashSync(password, bcrypt_saltRounds);
-        const createdUser = await crud.create({username, email, passwordHash});
+        const createdUser = await this.crud.create({username, email, passwordHash});
 
-        let longToken       = this.tokenManager.genLongToken({userId: createdUser._id, userKey: createdUser.key });
+        let longToken       = this.tokenManager.genLongToken({userId: createdUser._id, userKey: createdUser.username });
         
         // Response
         return { 
             longToken 
         };
+    }
+
+    async loginUser({email, password}){
+        const users = await this.crud.read({email});
+        if(users.length == 0){
+            return {message: "email not found"};
+        }
+        const user = users[0];
+        const passwordMatch = await bcrypt.compareSync(password, user.passwordHash);
+        if(!passwordMatch){
+            return {message: "wrong password"};
+        }
+
+        let longToken = this.tokenManager.genLongToken({userId: user._id, userKey: user.username});
+
+        return {longToken}
     }
 
 }
