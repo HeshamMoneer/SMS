@@ -26,7 +26,9 @@ module.exports = class School {
         
         // Response
         return { 
-            createdSchool, 
+            name: createdSchool.name,
+            address: createdSchool.address,
+            url: createdSchool.url,
         };
     }
 
