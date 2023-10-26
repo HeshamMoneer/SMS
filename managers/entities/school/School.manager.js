@@ -12,7 +12,7 @@ module.exports = class School {
     async create({name, address, url, __token}){
         const decoded = __token;
         if(decoded.userKey != 2){
-            return {error: 'You should be a super admin to do that'};
+            return {error: 'You should be a super admin to do that', statusCode: 401};
         }
 
         const school = {name, address, url};
@@ -36,7 +36,7 @@ module.exports = class School {
         const name = context;
         const schools = await this.crud.read({name});
         if(schools.length == 0){
-            return {error: `no schools were found by the given name`};
+            return {error: `no schools were found by the given name`, statusCode: 400};
         }
         
         const school = schools[0];
@@ -50,12 +50,12 @@ module.exports = class School {
     async update({name, address, url, context, __token}){
         const decoded = __token;
         if(decoded.userKey != 2){
-            return {error: 'You should be a super admin to do that'};
+            return {error: 'You should be a super admin to do that', statusCode: 401};
         }
 
         const oldSchools = await this.crud.read({name});
         if(oldSchools.length == 0){
-            return {message: `no schools were found by the given name`};
+            return {message: `no schools were found by the given name`, statusCode: 400};
         }
 
         const oldSchoolId = oldSchools[0]._id;

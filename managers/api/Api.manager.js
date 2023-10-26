@@ -159,16 +159,18 @@ module.exports = class ApiHandler {
             }});
             if(!result)result={}
 
+            let code = result.statusCode || 200;
+
             if(result.selfHandleResponse){
                 // do nothing if response handeled
             } else {
                 
                 if(result.errors){
-                    return this.managers.responseDispatcher.dispatch(res, {ok: false, errors: result.errors});
+                    return this.managers.responseDispatcher.dispatch(res, {ok: false, errors: result.errors, code});
                 } else if(result.error){
-                    return this.managers.responseDispatcher.dispatch(res, {ok: false, message: result.error});
+                    return this.managers.responseDispatcher.dispatch(res, {ok: false, message: result.error, code});
                 } else {
-                    return this.managers.responseDispatcher.dispatch(res, {ok:true, data: result});
+                    return this.managers.responseDispatcher.dispatch(res, {ok:true, data: result, code});
                 }
             }
         }});
