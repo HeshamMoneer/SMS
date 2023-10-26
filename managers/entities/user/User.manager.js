@@ -48,12 +48,7 @@ module.exports = class User {
         return {longToken}
     }
 
-    async updateUserAccessRights({email, accessRights, __token}){
-        const decoded = __token;
-        if(decoded.userKey != 2){
-            return {error: 'You should be a super admin to do that', statusCode: 401};
-        }
-
+    async updateUserAccessRights({email, accessRights, __super}){
         const oldUsers = await this.crud.read({email});
         if(oldUsers.length == 0){
             return {error: "user to update does not exist", statusCode: 400};

@@ -9,12 +9,7 @@ module.exports = class School {
         this.crud                = mongoDB.CRUD(mongomodels.school);
     }
 
-    async create({name, address, url, __token}){
-        const decoded = __token;
-        if(decoded.userKey != 2){
-            return {error: 'You should be a super admin to do that', statusCode: 401};
-        }
-
+    async create({name, address, url, __super}){
         const school = {name, address, url};
 
         // Data validation
@@ -47,12 +42,7 @@ module.exports = class School {
         };
     }
 
-    async update({name, address, url, context, __token}){
-        const decoded = __token;
-        if(decoded.userKey != 2){
-            return {error: 'You should be a super admin to do that', statusCode: 401};
-        }
-
+    async update({name, address, url, context, __super}){
         const oldSchools = await this.crud.read({name});
         if(oldSchools.length == 0){
             return {message: `no schools were found by the given name`, statusCode: 400};
