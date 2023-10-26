@@ -47,6 +47,16 @@ module.exports = {
         type: 'string',
         length: {min: 9, max: 300},
     },
+    name: {
+        path: 'name',
+        type: 'string',
+        length: {min: 3, max: 300},
+    },
+    address: {
+        path: 'address',
+        type: 'string',
+        length: {min: 5, max: 300},
+    },
     emoji: {
         path: 'emoji',
         type: 'Array',

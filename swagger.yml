@@ -17,6 +17,37 @@ tags:
   
 paths:
 
+## School APIs ##
+  /api/school/create:
+    post:
+      summary: Create a new school, you need to be a super admin to do that 
+      tags:
+        - School
+      security:
+        - api_key: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                address:
+                  type: string
+                url:
+                  type: string
+              example:
+                name: GUC
+                address: Cairo, Egypt
+                url: guc.edu.eg
+      responses:
+        '200':
+          description: Created successfully
+        '400':
+          description: Bad request
+
 ## User & tokens APIs ##
   /api/user/createUser:
     post:
