@@ -47,6 +47,8 @@ paths:
           description: Created successfully
         '400':
           description: Bad request
+        '401':
+          description: Unauthorized 
 
   /api/school/read/{name}:
     get:
@@ -95,6 +97,8 @@ paths:
           description: Response successful
         '400':
           description: Bad request
+        '401':
+          description: Unauthorized 
 
 
 ## User & tokens APIs ##
@@ -178,6 +182,8 @@ paths:
           description: Successful request
         '400':
           description: Bad request
+        '401':
+          description: Unauthorized 
 
 
   /api/token/v1_createShortToken:
@@ -192,3 +198,5 @@ paths:
           description: Token generated successfully
         '400':
           description: Bad request
+        '401':
+          description: Unauthorized 
