@@ -5,7 +5,7 @@ module.exports = class School {
         this.cortex              = cortex;
         this.validators          = validators; 
         this.tokenManager        = managers.token;
-        this.httpExposed         = ['create', 'get=read', 'patch=update'];
+        this.httpExposed         = ['create', 'get=read', 'patch=update', 'delete=delete'];
         this.crud                = mongoDB.CRUD(mongomodels.school);
     }
 
@@ -59,6 +59,21 @@ module.exports = class School {
             url: updatedSchool.url,
             address: updatedSchool.address,
         }
+    }
+
+    async delete({context, __super}){
+        const name = context;
+        const schools = await this.crud.read({name});
+        if(schools.length == 0){
+            return {error: `no schools were found by the given name`, statusCode: 400};
+        }
+        
+        const deletedSchool = await this.crud.delete(schools[0]._id);
+        return {
+            name: deletedSchool.name,
+            address: deletedSchool.address,
+            url: deletedSchool.url,
+        };
     }
 
 }

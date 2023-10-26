@@ -100,6 +100,28 @@ paths:
         '401':
           description: Unauthorized 
 
+  /api/school/delete/{name}:
+    delete:
+      summary: Delete a school by its name, you must be a super admin
+      tags:
+        - School
+      security:
+        - api_key: []
+      parameters:
+        - in: path
+          name: name
+          schema:
+            type: string
+          required: true
+          example: GUC
+      responses:
+        '200':
+          description: Request successful
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+
 
 ## User & tokens APIs ##
   /api/user/createUser:
