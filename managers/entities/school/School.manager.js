@@ -36,7 +36,7 @@ module.exports = class School {
         const name = context;
         const schools = await this.crud.read({name});
         if(schools.length == 0){
-            return {message: `no schools were found by the given name`};
+            return {error: `no schools were found by the given name`};
         }
         
         const school = schools[0];
