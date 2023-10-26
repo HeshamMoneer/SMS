@@ -24,7 +24,7 @@ module.exports = class User {
         const passwordHash = await bcrypt.hashSync(password, bcrypt_saltRounds);
         const createdUser = await this.crud.create({username, email, passwordHash});
 
-        let longToken       = this.tokenManager.genLongToken({userId: createdUser._id, userKey: createdUser.email });
+        let longToken       = this.tokenManager.genLongToken({userId: createdUser._id, userKey: createdUser.accessRights });
         
         // Response
         return { 
@@ -43,7 +43,7 @@ module.exports = class User {
             return {message: "wrong password"};
         }
 
-        let longToken = this.tokenManager.genLongToken({userId: user._id, userKey: user.email});
+        let longToken = this.tokenManager.genLongToken({userId: user._id, userKey: user.accessRights});
 
         return {longToken}
     }
