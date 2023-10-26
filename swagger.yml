@@ -48,6 +48,24 @@ paths:
         '400':
           description: Bad request
 
+  /api/school/read/{name}:
+    get:
+      summary: Read a school info by its name
+      tags:
+        - School
+      parameters:
+        - in: path
+          name: name
+          schema:
+            type: string
+          required: true
+          example: GUC
+      responses:
+        '200':
+          description: Request successful
+        '400':
+          description: Bad request
+
 ## User & tokens APIs ##
   /api/user/createUser:
     post:

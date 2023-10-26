@@ -5,7 +5,7 @@ module.exports = class School {
         this.cortex              = cortex;
         this.validators          = validators; 
         this.tokenManager        = managers.token;
-        this.httpExposed         = ['create'];
+        this.httpExposed         = ['create', 'get=read'];
         this.crud                = mongoDB.CRUD(mongomodels.school);
     }
 
@@ -27,6 +27,21 @@ module.exports = class School {
         // Response
         return { 
             createdSchool, 
+        };
+    }
+
+    async read({context}){
+        const name = context;
+        const schools = await this.crud.read({name});
+        if(schools.length == 0){
+            return {message: `no schools were found by the given name`};
+        }
+        
+        const school = schools[0];
+        return {
+            name: school.name,
+            address: school.address,
+            url: school.url,
         };
     }
 

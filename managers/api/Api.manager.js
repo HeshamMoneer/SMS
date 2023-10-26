@@ -155,6 +155,7 @@ module.exports = class ApiHandler {
                 ...body, 
                 ...results,
                 res,
+                context,
             }});
             if(!result)result={}
 
