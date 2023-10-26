@@ -5,7 +5,7 @@ module.exports = class School {
         this.cortex              = cortex;
         this.validators          = validators; 
         this.tokenManager        = managers.token;
-        this.httpExposed         = ['create', 'get=read'];
+        this.httpExposed         = ['create', 'get=read', 'patch=update'];
         this.crud                = mongoDB.CRUD(mongomodels.school);
     }
 
@@ -45,6 +45,30 @@ module.exports = class School {
             address: school.address,
             url: school.url,
         };
+    }
+
+    async update({name, address, url, context, __token}){
+        const decoded = __token;
+        if(decoded.userKey != 2){
+            return {error: 'You should be a super admin to do that'};
+        }
+
+        const oldSchools = await this.crud.read({name});
+        if(oldSchools.length == 0){
+            return {message: `no schools were found by the given name`};
+        }
+
+        const oldSchoolId = oldSchools[0]._id;
+        let data = {};
+        if(address) data = {...data, address};
+        if(url) data = {...data, url};
+        const updatedSchool = await this.crud.update(oldSchoolId, data);
+
+        return {
+            name: updatedSchool.name,
+            url: updatedSchool.url,
+            address: updatedSchool.address,
+        }
     }
 
 }

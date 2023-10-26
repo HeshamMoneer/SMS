@@ -66,6 +66,37 @@ paths:
         '400':
           description: Bad request
 
+  /api/school/update/:
+    patch:
+      summary: Find a school by its name and update its url and/or address
+      tags:
+        - School
+      security:
+        - api_key: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                address:
+                  type: string
+                url:
+                  type: string
+              example:
+                name: GUC
+                address: Cairo, Egypt
+                url: guc.edu.eg
+      responses:
+        '200':
+          description: Response successful
+        '400':
+          description: Bad request
+
+
 ## User & tokens APIs ##
   /api/user/createUser:
     post:
