@@ -9,7 +9,7 @@ module.exports = class User {
         this.validators          = validators; 
         this.tokenManager        = managers.token;
         this.usersCollection     = "users";
-        this.httpExposed         = ['createUser', 'loginUser'];
+        this.httpExposed         = ['createUser', 'loginUser', 'updateUserAccessRights'];
         this.crud                = mongoDB.CRUD(mongomodels.user);
     }
 
@@ -35,17 +35,33 @@ module.exports = class User {
     async loginUser({email, password}){
         const users = await this.crud.read({email});
         if(users.length == 0){
-            return {message: "email not found"};
+            return {error: "email not found"};
         }
         const user = users[0];
         const passwordMatch = await bcrypt.compareSync(password, user.passwordHash);
         if(!passwordMatch){
-            return {message: "wrong password"};
+            return {error: "wrong password"};
         }
 
         let longToken = this.tokenManager.genLongToken({userId: user._id, userKey: user.accessRights});
 
         return {longToken}
+    }
+
+    async updateUserAccessRights({email, accessRights, __token}){
+        const decoded = __token;
+        if(decoded.userKey != 2){
+            return {error: 'You should be a super admin to do that'};
+        }
+
+        const oldUsers = await this.crud.read({email});
+        if(oldUsers.length == 0){
+            return {error: "user to update does not exist"};
+        }
+        const oldUser = oldUsers[0];
+        const newUser = await this.crud.update(oldUser._id, {accessRights});
+
+        return {email: newUser.email, accessRights: newUser.accessRights};
     }
 
 }

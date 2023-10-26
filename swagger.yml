@@ -71,6 +71,35 @@ paths:
         '400':
           description: Bad request
 
+  /api/user/updateUserAccessRights:
+    post:
+      summary: update the user access right, if you are a super admin
+      tags:
+        - User
+      security:
+        - api_key: []
+      requestBody:
+        description: 'user access rights: 0 => no rights, 1 => school admin, 2 => super admin, default => no rights'
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                accessRights:
+                  type: integer
+              example:
+                email: 'h@h.com'
+                accessRights: 0
+      responses:
+        '200':
+          description: Successful request
+        '400':
+          description: Bad request
+
+
   /api/token/v1_createShortToken:
     post:
       summary: Generate a short token
