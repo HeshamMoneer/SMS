@@ -1,0 +1,85 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: School Management System
+  description: School Management System API
+components:
+  securitySchemes:
+    api_key:
+      type: apiKey
+      in: header
+      name: token
+tags:
+  - name: Classroom
+  - name: School
+  - name: Student
+  - name: User
+  
+paths:
+
+## User & tokens APIs ##
+  /api/user/createUser:
+    post:
+      summary: Register a new user
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                username:
+                  type: string
+              example:
+                email: 'h@h.com'
+                password: '********'
+                username: Hesham Moneer
+      responses:
+        '200':
+          description: Created successfully
+        '400':
+          description: Bad request
+
+  /api/user/loginUser:
+    post:
+      summary: Login using registered user credentials
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              example:
+                email: 'h@h.com'
+                password: '********'
+      responses:
+        '200':
+          description: Logged in successfully
+        '400':
+          description: Bad request
+
+  /api/token/v1_createShortToken:
+    post:
+      summary: Generate a short token
+      tags:
+        - User
+      security:
+        - api_key: []
+      responses:
+        '200':
+          description: Token generated successfully
+        '400':
+          description: Bad request
