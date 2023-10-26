@@ -15,6 +15,7 @@ module.exports = {
         passwordHash: {
             type: String,
             required: true,
+            required: true,
         },
         accessRights: {
             type: Number,
