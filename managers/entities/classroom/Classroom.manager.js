@@ -10,72 +10,44 @@ module.exports = class Classroom {
         this.crud_school         = mongoDB.CRUD(mongomodels.school);
     }
 
-    async create({label, __token}){
+    async create({label, __token, __school}){
         
-        const schoolId = __token.userKey;
-
-        // Data validation
-        let result = await this.validators.classroom.create({label, mongoId: schoolId});
-        if(result) return {error: result[0].message, statusCode: 400};
-        
-        // Creation Logic
-        const schools = await this.crud_school.read({_id:schoolId});
-        if(schools.length == 0){
-            return {error: 'school not found', statusCode: 400};
-        }
-        const newClass = await this.crud.create({label, school: schoolId});
+        const schoolId   = __school.schoolId;
+        const schoolName = __school.schoolName;
+        const newClass   = await this.crud.create({label, school: schoolId});
         
         // Response
         return { 
             label: newClass.label,
-            school: schools[0].name,
+            school: schoolName,
         };
     }
 
-    async read({__token}){
-        const schoolId = __token.userKey;
-
-        // Data validation
-        let result = await this.validators.classroom.schoolId({mongoId: schoolId});
-        if(result) return {error: result[0].message, statusCode: 400};
-
-        const schools = await this.crud_school.read({_id:schoolId});
-        if(schools.length == 0){
-            return {error: `school not found`, statusCode: 400};
-        }
+    async read({__token, __school}){
+        const schoolId   = __school.schoolId;
+        const schoolName = __school.schoolName;
 
         const classrooms = await this.crud.read({school: schoolId});
-        const classrooms_res = classrooms.map(_ => _.label);
+        const classroomsRes = classrooms.map(_ => _.label);
         
         return {
-            school: schools[0].name,
-            classrooms: classrooms_res,
+            school: schoolName,
+            classrooms: classroomsRes,
         };
     }
 
-    async delete({label, __token}){
-        const schoolId = __token.userKey;
-
-        // Data validation
-        let result = await this.validators.classroom.schoolId({mongoId: schoolId});
-        if(result) return {error: result[0].message, statusCode: 400};
-
-        const schools = await this.crud_school.read({_id:schoolId});
-        if(schools.length == 0){
-            return {error: `school not found`, statusCode: 400};
-        }
-        
-        const school = schools[0];
+    async delete({label, __token, __school}){
+        const schoolName = __school.schoolName;
         const classrooms = await this.crud.read({label});
 
         if(classrooms.length == 0){
-            return {error: `classroom not found in school ${school.name}`, statusCode: 400};
+            return {error: `classroom not found in school ${schoolName}`, statusCode: 400};
         }
 
         await this.crud.delete(classrooms[0]._id);
 
         return {
-            message: `Deleted classroom with the label ${label} in school ${school.name}`,
+            message: `Deleted classroom with the label ${label} in school ${schoolName}`,
         };
     }
 
