@@ -37,8 +37,9 @@ module.exports = class Classroom {
     }
 
     async delete({label, __token, __school}){
+        const schoolId   = __school.schoolId;
         const schoolName = __school.schoolName;
-        const classrooms = await this.crud.read({label});
+        const classrooms = await this.crud.read({label, school:schoolId});
 
         if(classrooms.length == 0){
             return {error: `classroom not found in school ${schoolName}`, statusCode: 400};

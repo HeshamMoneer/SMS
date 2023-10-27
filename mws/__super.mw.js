@@ -5,6 +5,6 @@ module.exports = ({ meta, config, managers }) =>{
             return managers.responseDispatcher.dispatch(res, {ok: false, code:401, errors: 'unauthorized, you must be a super admin'});
         }
     
-        next(decoded);
+        next(accessRights);
     }
 }
