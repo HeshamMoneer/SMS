@@ -9,7 +9,7 @@ module.exports = class School {
         this.crud                = mongoDB.CRUD(mongomodels.school);
     }
 
-    async create({name, address, url, __super}){
+    async create({name, address, url, __token, __super}){
         const school = {name, address, url};
 
         // Data validation
@@ -42,7 +42,7 @@ module.exports = class School {
         };
     }
 
-    async update({name, address, url, context, __super}){
+    async update({name, address, url, context, __token, __super}){
         const oldSchools = await this.crud.read({name});
         if(oldSchools.length == 0){
             return {message: `no schools were found by the given name`, statusCode: 400};
@@ -61,7 +61,7 @@ module.exports = class School {
         }
     }
 
-    async delete({context, __super}){
+    async delete({context, __token, __super}){
         const name = context;
         const schools = await this.crud.read({name});
         if(schools.length == 0){

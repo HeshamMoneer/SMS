@@ -49,7 +49,7 @@ module.exports = class User {
         return {longToken}
     }
 
-    async updateUserAccessRights({email, accessRights, __super}){
+    async updateUserAccessRights({email, accessRights, __token, __super}){
 
         let result = await this.validators.user.updateUserAccessRights({accessRights});
         if(result) return {error: result[0].message, statusCode: 400};
