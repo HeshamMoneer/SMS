@@ -16,7 +16,7 @@ module.exports = ({ meta, config, managers }) =>{
             return managers.responseDispatcher.dispatch(res, {ok: false, code:401, errors: 'unauthorized'});
         }
 
-        if(decoded.userKey != 2){
+        if(decoded.userKey !== "super"){
             return managers.responseDispatcher.dispatch(res, {ok: false, code:401, errors: 'unauthorized, you must be a super admin'});
         }
     

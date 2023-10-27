@@ -11,6 +11,7 @@ module.exports = class User {
         this.usersCollection     = "users";
         this.httpExposed         = ['createUser', 'loginUser', 'updateUserAccessRights'];
         this.crud                = mongoDB.CRUD(mongomodels.user);
+        this.crud_school         = mongoDB.CRUD(mongomodels.school);
     }
 
     async createUser({username, email, password}){
@@ -49,14 +50,32 @@ module.exports = class User {
     }
 
     async updateUserAccessRights({email, accessRights, __super}){
+
+        let result = await this.validators.user.updateUserAccessRights({accessRights});
+        if(result) return {error: result[0].message, statusCode: 400};
+
         const oldUsers = await this.crud.read({email});
         if(oldUsers.length == 0){
             return {error: "user to update does not exist", statusCode: 400};
         }
         const oldUser = oldUsers[0];
-        const newUser = await this.crud.update(oldUser._id, {accessRights});
 
-        return {email: newUser.email, accessRights: newUser.accessRights};
+        let res_accessRights = accessRights.split(':')[0];
+
+        if(accessRights.includes('school')){
+            const school_name = accessRights.split(':')[1];
+            const schools = await this.crud_school.read({name:school_name});
+            if(schools.length == 0){
+                return {error: `School ${school_name} not found`, statusCode: 400};
+            }
+
+            const school_id = schools[0]._id;
+            accessRights = school_id;
+        }
+
+        const newUser = await this.crud.update(oldUser._id, {accessRights});
+        
+        return {email: newUser.email, accessRights: res_accessRights};
     }
 
 }

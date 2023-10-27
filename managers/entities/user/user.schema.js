@@ -15,6 +15,12 @@ module.exports = {
             required: true,
         },
     ],
+    updateUserAccessRights: [
+        {
+            model: 'accessRights',
+            required: true,
+        },
+    ],
 }
 
 

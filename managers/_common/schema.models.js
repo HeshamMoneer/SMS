@@ -57,6 +57,11 @@ module.exports = {
         type: 'String',
         regex: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
     },
+    accessRights: {
+        path: 'accessRights',
+        type: 'String',
+        regex: /^(user|super|school:.*)$/,
+    },
     emoji: {
         path: 'emoji',
         type: 'Array',

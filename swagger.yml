@@ -185,7 +185,7 @@ paths:
       security:
         - api_key: []
       requestBody:
-        description: 'user access rights: 0 => no rights, 1 => school admin, 2 => super admin, default => no rights'
+        description: 'user access rights: "user" => no admin rights, "school:${schhol_name}" => school admin, "super" => super admin'
         required: true
         content:
           application/json:
@@ -195,10 +195,10 @@ paths:
                 email:
                   type: string
                 accessRights:
-                  type: integer
+                  type: string
               example:
                 email: 'h@h.com'
-                accessRights: 0
+                accessRights: user
       responses:
         '200':
           description: Successful request
