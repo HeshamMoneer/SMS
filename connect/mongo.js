@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
+const models = {};
+
 module.exports = ({ uri }) => {
   //database connection
   mongoose.connect(uri, {
@@ -35,8 +37,12 @@ module.exports = ({ uri }) => {
   });
 
   const getModel = ({schemaDefinition, modelName}) => {
-    const schema = new mongoose.Schema(schemaDefinition);
-    return mongoose.model(modelName, schema);
+    if(!models[modelName]){
+      const schema = new mongoose.Schema(schemaDefinition);
+      models[modelName] = mongoose.model(modelName, schema);
+    }
+
+    return models[modelName];
   };
 
   return {
