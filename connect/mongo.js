@@ -36,9 +36,12 @@ module.exports = ({ uri }) => {
     });
   });
 
-  const getModel = ({schemaDefinition, modelName}) => {
+  const getModel = ({schemaDefinition, modelName, indecies}) => {
     if(!models[modelName]){
       const schema = new mongoose.Schema(schemaDefinition);
+      for(index of indecies){
+        schema.index(...index);
+      }
       models[modelName] = mongoose.model(modelName, schema);
     }
 
@@ -47,8 +50,9 @@ module.exports = ({ uri }) => {
 
   return {
     // Add a function to perform CRUD operations on a given entity
-    CRUD: ({schemaDefinition, modelName}) => {
-      const Model = getModel({schemaDefinition, modelName});
+    CRUD: ({schemaDefinition, modelName, indecies}) => {
+      indecies = indecies || [];
+      const Model = getModel({schemaDefinition, modelName, indecies});
 
       return {
         create: async (data) => {
