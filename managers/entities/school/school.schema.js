@@ -1,5 +1,5 @@
 module.exports = {
-    createSchool: [
+    create: [
         {
             model: 'name',
             required: true,

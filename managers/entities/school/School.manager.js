@@ -13,7 +13,7 @@ module.exports = class School {
         const school = {name, address, url};
 
         // Data validation
-        let result = await this.validators.school.createSchool(school);
+        let result = await this.validators.school.create(school);
         if(result) return {error: result[0].message, statusCode: 400};
         
         // Creation Logic
