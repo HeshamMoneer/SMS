@@ -17,6 +17,75 @@ tags:
   
 paths:
 
+## Classroom APIs ##
+  /api/classroom/create:
+    post:
+      summary: Create a new classroom in you school, you have to be a school admin to create a classroom
+      tags:
+        - Classroom
+      security:
+        - api_key: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                label:
+                  type: string
+              example:
+                label: 12C
+      responses:
+        '200':
+          description: Created successfully
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized 
+
+  /api/classroom/read:
+    get:
+      summary: Get all the classrooms of your school
+      tags:
+        - Classroom
+      security:
+        - api_key: []
+      responses:
+        '200':
+          description: Successful request
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized 
+
+  /api/classroom/delete:
+    delete:
+      summary: Delete a classroom by its label from your school
+      tags:
+        - Classroom
+      security:
+        - api_key: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                label:
+                  type: string
+              example:
+                label: 12C
+      responses:
+        '200':
+          description: Successful request
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized 
+      
+
 ## School APIs ##
   /api/school/create:
     post:
