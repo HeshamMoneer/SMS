@@ -8,9 +8,11 @@ module.exports = {
         },
         {
             model: 'password',
+            required: true,
         },
         {
             model: 'email',
+            required: true,
         },
     ],
 }

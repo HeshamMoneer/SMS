@@ -17,11 +17,6 @@ module.exports = {
         type: 'string',
         length: {min: 8, max: 100},
     },
-    email: {
-        path: 'email',
-        type: 'string',
-        length: {min:3, max: 100},
-    },
     title: {
         path: 'title',
         type: 'string',
@@ -57,6 +52,11 @@ module.exports = {
         type: 'string',
         length: {min: 5, max: 300},
     },
+    email: {
+        path: 'email',
+        type: 'String',
+        regex: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+    },
     emoji: {
         path: 'emoji',
         type: 'Array',
@@ -90,10 +90,6 @@ module.exports = {
     phone: {
         type: 'String',
         length: 13,
-    },
-    email: {
-        type: 'String',
-        regex: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     },
     number: {
         type: 'Number',
