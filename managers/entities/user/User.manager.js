@@ -18,7 +18,7 @@ module.exports = class User {
 
         // Data validation
         let result = await this.validators.user.createUser(user);
-        if(result) return result;
+        if(result) return {error: result[0].message, statusCode: 400};
         
         // Creation Logic
         const passwordHash = await bcrypt.hashSync(password, bcrypt_saltRounds);

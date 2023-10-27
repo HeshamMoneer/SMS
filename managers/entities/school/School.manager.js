@@ -14,7 +14,7 @@ module.exports = class School {
 
         // Data validation
         let result = await this.validators.school.createSchool(school);
-        if(result) return result;
+        if(result) return {error: result[0].message, statusCode: 400};
         
         // Creation Logic
         const createdSchool = await this.crud.create(school);
